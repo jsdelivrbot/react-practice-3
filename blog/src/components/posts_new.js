@@ -6,6 +6,7 @@ class PostsNew extends Component {
   renderField(field) {
     //field.input is an object with event handlers and properties
     //use spread operator to distribute to input component
+    //meta property automatically given to Field component
     return (
       <div className="form-group">
         <label>{field.label}</label>
@@ -14,13 +15,20 @@ class PostsNew extends Component {
           type="text"
           {...field.input}
         />
+        {field.meta.touched ? field.meta.error : ''}
       </div>
     );
   }
 
+  onSubmit(values) {
+    console.log(values);
+  }
+
   render(){
+    const { handleSubmit } = this.props; //comes from reduxForm helper line 76
+
     return(
-      <form>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <Field
           label="Title for Post"
           name="title"
@@ -39,6 +47,8 @@ class PostsNew extends Component {
         component={this.renderField}
         />
 
+      <button type="submit" className="btn btn-primary">Submit</button>
+
       </form>
     );
   }
@@ -48,8 +58,8 @@ function validate(values) {
   const errors = {};
 
   //Validate the inputs from 'values'
-  if(!values.title){
-    errors.title="Please enter a title.";
+  if(!values.title || values.title.length < 3){
+    errors.title="Please enter a title that is at least 3 characters.";
   }
   if(!values.categories){
     errors.categories="Please enter some categories.";

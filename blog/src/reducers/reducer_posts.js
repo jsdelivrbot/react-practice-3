@@ -9,7 +9,7 @@ export default function(state = {}, action) {
     case FETCH_POST:
       return { ...state, [ action.payload.data.id]: action.payload.data };
     case FETCH_POSTS:
-      return _.mapKeys(action.payload.data, 'id'); //soooo useful
+      return _.mapKeys(action.payload.data, 'smile_job_id'); //soooo useful
     default:
       return state;
   }

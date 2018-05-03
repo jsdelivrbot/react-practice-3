@@ -16,6 +16,8 @@ describe('App', () => {
   });
 
   describe('when clicking the `add gift` button', () => {
+    const id = 1;
+
     beforeEach(() => {
       app.find('.btn-add').simulate('click'); //allows us to find inner child nodes or components by jsx tags or by their classname
     });
@@ -26,15 +28,25 @@ describe('App', () => {
     });
 
     it ('adds a new gift to `state` ', () => {
-      expect(app.state().gifts).toEqual([{id: 1}]);
+      expect(app.state().gifts).toEqual([{id}]);
     });
     
     it('adds a new gift to the rendered list ', () => {
-      expect(app.find('.gift-list').children().length).toEqual(1);
+      expect(app.find('.gift-list').children().length).toEqual(id);
     });
 
     it('creates a Gift component', () => {
       expect(app.find('Gift').exists()).toBe(true); //find can also match on jsx
+    });
+
+    describe('and the user wants to remove the added gift', () => {
+      beforeEach(() => {
+        app.instance().removeGift(id);
+      });
+
+      it('removes the gift from `state`', () => {
+        expect(app.state().gifts).toEqual([]);
+      });
     });
   });
 
